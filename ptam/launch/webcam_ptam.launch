@@ -1,0 +1,16 @@
+<launch>
+  <include file="$(find ptam)/launch/webcam.launch" />
+  
+  <node name="image_proc" pkg="image_proc" type="image_proc" ns="usb_cam" />
+  
+  <node name="ptam_visuzalizer" pkg="ptam" type="ptam_visualizer" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ptam)/rviz/ptam.rviz" />
+
+  <node name="ptam" pkg="ptam" type="ptam" clear_params="true" output="screen">
+    <remap from="image" to="$(optenv IMAGE /usb_cam/image_mono)" />
+    <rosparam file="$(find ptam)/PtamFixParams.yaml" />
+    <remap from="pose" to="pose" />
+  </node>
+</launch>
+
